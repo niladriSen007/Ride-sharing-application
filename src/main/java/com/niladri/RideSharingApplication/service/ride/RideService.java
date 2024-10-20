@@ -7,7 +7,9 @@ import com.niladri.RideSharingApplication.model.enums.RideStatus;
 import com.niladri.RideSharingApplication.model.ride.RideModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RideService implements RideServiceInterface {
 	@Override
 	public RideDto getRideById(Long rideId) {

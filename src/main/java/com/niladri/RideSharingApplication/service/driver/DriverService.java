@@ -2,9 +2,11 @@ package com.niladri.RideSharingApplication.service.driver;
 
 import com.niladri.RideSharingApplication.dto.driver.DriverResponseDto;
 import com.niladri.RideSharingApplication.dto.ride.RideDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DriverService implements DriverServiceInterface {
 	@Override
 	public RideDto acceptRide(Long rideId) {

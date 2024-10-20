@@ -37,6 +37,8 @@ public class RideModel {
 	@Enumerated(EnumType.STRING)
 	private PaymentMethods paymentMethod;
 
+	private String otp;
+
 	@Enumerated(EnumType.STRING)
 	private RideStatus status;
 
