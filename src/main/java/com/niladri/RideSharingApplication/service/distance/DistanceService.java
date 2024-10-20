@@ -1,7 +1,9 @@
 package com.niladri.RideSharingApplication.service.distance;
 
 import org.locationtech.jts.geom.Point;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DistanceService implements DistanceServiceInterface {
 
 	@Override
