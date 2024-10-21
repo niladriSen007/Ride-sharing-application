@@ -1,6 +1,7 @@
 package com.niladri.RideSharingApplication.dto.ride;
 
 import com.niladri.RideSharingApplication.dto.driver.DriverResponseDto;
+import com.niladri.RideSharingApplication.dto.point.PointDto;
 import com.niladri.RideSharingApplication.dto.rider.RiderResponseDto;
 import com.niladri.RideSharingApplication.model.driver.DriverModel;
 import com.niladri.RideSharingApplication.model.enums.PaymentMethods;
@@ -19,13 +20,14 @@ import java.time.LocalDateTime;
 public class RideDto {
 
 	private Long id;
-	private Point pickupLocation;
-	private Point dropLocation;
+	private PointDto pickupLocation;
+	private PointDto dropLocation;
 	private LocalDateTime createdTime;
 	private RiderResponseDto rider;
 	private DriverResponseDto driver;
 	private PaymentMethods paymentMethod;
 	private RideStatus status;
+	private String otp;
 	private Double fare;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
