@@ -10,4 +10,8 @@ import lombok.NoArgsConstructor;
 public class PointDto {
 	private Double[] coordinates;
 	private String type = "Point";
+
+	public PointDto(Double[] coordinates) {
+		this.coordinates = coordinates;
+	}
 }
