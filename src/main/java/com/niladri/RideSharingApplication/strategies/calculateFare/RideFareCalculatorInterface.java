@@ -1,7 +1,7 @@
 package com.niladri.RideSharingApplication.strategies.calculateFare;
 
-import com.niladri.RideSharingApplication.dto.rideRequest.RideRequestDto;
+import com.niladri.RideSharingApplication.model.rideRequest.RideRequestModel;
 
 public interface RideFareCalculatorInterface {
-	double calculateFare(RideRequestDto rideRequestDto);
+	Double calculateFare(RideRequestModel rideRequest);
 }

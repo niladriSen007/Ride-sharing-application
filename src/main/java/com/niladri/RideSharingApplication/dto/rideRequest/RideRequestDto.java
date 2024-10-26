@@ -1,5 +1,6 @@
 package com.niladri.RideSharingApplication.dto.rideRequest;
 
+import com.niladri.RideSharingApplication.dto.point.PointDto;
 import com.niladri.RideSharingApplication.dto.rider.RiderResponseDto;
 import com.niladri.RideSharingApplication.model.enums.PaymentMethods;
 import com.niladri.RideSharingApplication.model.enums.RideRequestStatus;
@@ -17,8 +18,8 @@ import java.time.LocalDateTime;
 public class RideRequestDto {
 
 	private Long id;
-	private Point pickupLocation;
-	private Point dropLocation;
+	private PointDto pickupLocation;
+	private PointDto dropLocation;
 	private LocalDateTime pickupTime;
 	private RiderResponseDto rider;
 	private PaymentMethods paymentMethod;
