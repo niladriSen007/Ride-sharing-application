@@ -26,7 +26,7 @@ public class DistanceService implements DistanceServiceInterface {
 
 
 
-			return body.getRoutes().get(0).getDistance();
+			return body.getRoutes().get(0).getDistance()/1000.0;
 		}catch (Exception e){
 			throw new RuntimeException("Error while calculating distance"+e.getMessage());
 		}
