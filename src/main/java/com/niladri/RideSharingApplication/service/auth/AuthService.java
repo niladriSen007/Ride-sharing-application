@@ -5,6 +5,7 @@ import com.niladri.RideSharingApplication.dto.driver.DriverResponseDto;
 import com.niladri.RideSharingApplication.dto.user.UserResponseDto;
 import com.niladri.RideSharingApplication.exception.UserAlreadyExists;
 import com.niladri.RideSharingApplication.model.enums.UserRoles;
+import com.niladri.RideSharingApplication.model.rider.RiderModel;
 import com.niladri.RideSharingApplication.model.user.UserModel;
 import com.niladri.RideSharingApplication.repository.user.UserRepository;
 import com.niladri.RideSharingApplication.service.rider.RiderService;
@@ -46,7 +47,7 @@ public class AuthService implements AuthServiceInterface {
 		UserModel newUser = userRepository.save(user);
 
 		//create user related entities like rider,wallet, etc.
-		riderService.createRiderProfile(newUser);
+		RiderModel riderProfile = riderService.createRiderProfile(newUser);
 
 		//TODO : create wallet
 

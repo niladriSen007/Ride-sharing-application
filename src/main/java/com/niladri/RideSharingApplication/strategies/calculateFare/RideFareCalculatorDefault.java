@@ -12,8 +12,6 @@ public class RideFareCalculatorDefault implements RideFareCalculatorInterface {
 
 	private final DistanceService distanceService;
 
-	static final Double RIDE_FARE_MULTIPLIER = 50.0;
-
 	@Override
 	public Double calculateFare(RideRequestModel rideRequest) {
 

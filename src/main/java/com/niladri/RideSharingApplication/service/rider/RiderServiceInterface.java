@@ -24,4 +24,6 @@ public interface RiderServiceInterface {
 	List<RideDto> getRiderAllRides();
 
 	RiderModel createRiderProfile(UserModel user);
+
+	RiderModel getCurrentRider();
 }
