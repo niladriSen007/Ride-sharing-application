@@ -2,14 +2,14 @@ package com.niladri.RideSharingApplication.model.rider;
 
 import com.niladri.RideSharingApplication.model.user.UserModel;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Setter
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RiderModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
