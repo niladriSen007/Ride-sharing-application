@@ -12,9 +12,6 @@ import com.niladri.RideSharingApplication.model.user.UserModel;
 import com.niladri.RideSharingApplication.repository.rideRequest.RideRequestRepository;
 import com.niladri.RideSharingApplication.repository.rider.RiderRepository;
 import com.niladri.RideSharingApplication.strategies.RideStrategyManager;
-import com.niladri.RideSharingApplication.strategies.calculateFare.RideFareCalculatorInterface;
-import com.niladri.RideSharingApplication.strategies.matchingDriver.DriverMatchingInterface;
-import com.niladri.RideSharingApplication.strategies.matchingDriver.DriverMatchingNearby;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -41,6 +38,7 @@ public class RiderService implements RiderServiceInterface {
 		//Mapping DTO to Model
 		RideRequestModel rideRequest = modelMapper.map(rideRequestDto, RideRequestModel.class);
 		rideRequest.setStatus(RideRequestStatus.PENDING);
+		rideRequest.setRider(currentRider);
 
 		//Calculating fare
 		rideRequest.setFare(rideStrategyManager.rideFareCalculator().calculateFare(rideRequest));
