@@ -4,7 +4,9 @@ import com.niladri.RideSharingApplication.model.enums.PaymentMethods;
 import com.niladri.RideSharingApplication.model.enums.RideRequestStatus;
 import com.niladri.RideSharingApplication.model.rider.RiderModel;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.locationtech.jts.geom.Point;
@@ -14,6 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RideRequestModel {
 
 	@Id
