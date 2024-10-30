@@ -41,6 +41,38 @@ public class GlobalExceptionHandler {
 		return buildErrorResponseDto(apiError);
 	}
 
+	@ExceptionHandler(DriverNotAuthorisedToStartRide.class)
+	public ResponseEntity<ApiDataResponse<?>> handleUserAlreadyExists(DriverNotAuthorisedToStartRide e){
+		ApiErrorResponse apiError = ApiErrorResponse.builder().
+				status(HttpStatus.BAD_REQUEST).
+				message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
+	@ExceptionHandler(RideNotStarted.class)
+	public ResponseEntity<ApiDataResponse<?>> handleRideNotStarted(RideNotStarted e){
+		ApiErrorResponse apiError = ApiErrorResponse.builder().
+				status(HttpStatus.BAD_REQUEST).
+				message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
+	@ExceptionHandler(InvalidOtp.class)
+	public ResponseEntity<ApiDataResponse<?>> handleInvalidOtp(InvalidOtp e){
+		ApiErrorResponse apiError = ApiErrorResponse.builder().
+				status(HttpStatus.BAD_REQUEST).
+				message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
+	@ExceptionHandler(ResourceNotFound.class)
+	public ResponseEntity<ApiDataResponse<?>> handleResourceNotFound(ResourceNotFound e){
+		ApiErrorResponse apiError = ApiErrorResponse.builder().
+				status(HttpStatus.BAD_REQUEST).
+				message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
 	@ExceptionHandler(UserNotFound.class)
 	public ResponseEntity<ApiDataResponse<?>> handleUserNotFoundException(UserNotFound e){
 		ApiErrorResponse apiError = ApiErrorResponse.builder().

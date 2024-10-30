@@ -1,6 +1,5 @@
 package com.niladri.RideSharingApplication.strategies.matchingDriver;
 
-import com.niladri.RideSharingApplication.dto.rideRequest.RideRequestDto;
 import com.niladri.RideSharingApplication.model.driver.DriverModel;
 import com.niladri.RideSharingApplication.model.rideRequest.RideRequestModel;
 import com.niladri.RideSharingApplication.repository.driver.DriverRepository;

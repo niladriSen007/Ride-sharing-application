@@ -5,6 +5,7 @@ import com.niladri.RideSharingApplication.dto.ride.RideDto;
 import com.niladri.RideSharingApplication.dto.rideRequest.RideRequestDto;
 import com.niladri.RideSharingApplication.dto.rider.RiderResponseDto;
 import com.niladri.RideSharingApplication.exception.UserNotFound;
+import com.niladri.RideSharingApplication.model.driver.DriverModel;
 import com.niladri.RideSharingApplication.model.enums.RideRequestStatus;
 import com.niladri.RideSharingApplication.model.rideRequest.RideRequestModel;
 import com.niladri.RideSharingApplication.model.rider.RiderModel;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class RiderService implements RiderServiceInterface {
 
 
 	@Override
+	@Transactional
 	public RideRequestDto requestRide(RideRequestDto rideRequestDto) {
 
 		RiderModel currentRider = getCurrentRider();
@@ -47,7 +50,11 @@ public class RiderService implements RiderServiceInterface {
 		RideRequestModel newRideRequest = rideRequestRepository.save(rideRequest);
 
 		//Matching driver
-		rideStrategyManager.driverMatchingStrategy(currentRider.getRating()).findMatchingDrivers(rideRequest);
+		List<DriverModel> matchingDrivers = rideStrategyManager.driverMatchingStrategy
+				(currentRider.getRating())
+				.findMatchingDrivers(rideRequest);
+
+		//TODO : Notify drivers
 
 		return modelMapper.map(newRideRequest, RideRequestDto.class);
 	}
@@ -85,7 +92,6 @@ public class RiderService implements RiderServiceInterface {
 	@Override
 	public RiderModel getCurrentRider() {
 		//TODO : get current rider from security context
-		return riderRepository.findById(1L).orElseThrow(
-				()-> new UserNotFound("Rider not found with id : 1"));
+		return riderRepository.findById(1L).orElseThrow(() -> new UserNotFound("Rider not found with id : 1"));
 	}
 }

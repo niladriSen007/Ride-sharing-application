@@ -4,11 +4,9 @@ import com.niladri.RideSharingApplication.dto.point.PointDto;
 import com.niladri.RideSharingApplication.dto.rider.RiderResponseDto;
 import com.niladri.RideSharingApplication.model.enums.PaymentMethods;
 import com.niladri.RideSharingApplication.model.enums.RideRequestStatus;
-import com.niladri.RideSharingApplication.model.rider.RiderModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +20,7 @@ public class RideRequestDto {
 	private PointDto dropLocation;
 	private LocalDateTime pickupTime;
 	private RiderResponseDto rider;
+	private Double fare;
 	private PaymentMethods paymentMethod;
 	private RideRequestStatus status;
 

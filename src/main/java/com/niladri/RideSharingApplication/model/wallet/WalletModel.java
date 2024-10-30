@@ -1,6 +1,5 @@
 package com.niladri.RideSharingApplication.model.wallet;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.niladri.RideSharingApplication.model.user.UserModel;
 import com.niladri.RideSharingApplication.model.walletTransaction.WalletTransactionModel;
 import jakarta.persistence.*;
