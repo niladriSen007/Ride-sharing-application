@@ -3,6 +3,8 @@ package com.niladri.RideSharingApplication.service.driver;
 import com.niladri.RideSharingApplication.dto.driver.DriverResponseDto;
 import com.niladri.RideSharingApplication.dto.ride.RideDto;
 import com.niladri.RideSharingApplication.model.driver.DriverModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -20,7 +22,9 @@ public interface DriverServiceInterface {
 
 	DriverResponseDto getDriverProfile();
 
-	List<RideDto> getDriverAllRides();
+	Page<RideDto> getDriverAllRides(PageRequest pageRequest);
 
 	DriverModel getCurrentDriver();
+
+	DriverModel updateDriverAvailability(DriverModel driver, Boolean isAvailable);
 }

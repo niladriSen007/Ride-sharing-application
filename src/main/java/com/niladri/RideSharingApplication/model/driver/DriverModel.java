@@ -22,6 +22,8 @@ public class DriverModel {
 
 	private Boolean available;
 
+		private String vehicleId;
+
 //	@Column(columnDefinition = "geometry(Point,4326)")
 //	is an annotation used in the `DriverModel` class to specify the column definition for the `currentLocation` field.
 //		- `@Column` is a JPA annotation that specifies the mapped column for a persistent property or field.

@@ -16,80 +16,92 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ApiDataResponse<?>> handleMyMethodArgumentNotValidException
-			(MethodArgumentNotValidException e){
+	public ResponseEntity<ApiDataResponse<?>> handleMyMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 		Map<String, String> errors = new HashMap<>();
-		e.getBindingResult().getAllErrors().forEach(error ->{
+		e.getBindingResult().getAllErrors().forEach(error -> {
 			String fieldName = ((FieldError) error).getField();
 			String errorMessage = error.getDefaultMessage();
-			errors.put(fieldName,errorMessage);
+			errors.put(fieldName, errorMessage);
 		});
-		ApiErrorResponse apiError = ApiErrorResponse.builder().
-				status(HttpStatus.BAD_REQUEST).
-				message("Input validation failed").
-				subErrors(errors).build();
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message("Input validation failed").subErrors(errors).build();
 		return buildErrorResponseDto(apiError);
 
 	}
 
 
 	@ExceptionHandler(UserAlreadyExists.class)
-	public ResponseEntity<ApiDataResponse<?>> handleUserAlreadyExists(UserAlreadyExists e){
-		ApiErrorResponse apiError = ApiErrorResponse.builder().
-				status(HttpStatus.BAD_REQUEST).
-				message(e.getMessage()).build();
+	public ResponseEntity<ApiDataResponse<?>> handleUserAlreadyExists(UserAlreadyExists e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
 		return buildErrorResponseDto(apiError);
 	}
 
 	@ExceptionHandler(DriverNotAuthorisedToStartRide.class)
-	public ResponseEntity<ApiDataResponse<?>> handleUserAlreadyExists(DriverNotAuthorisedToStartRide e){
-		ApiErrorResponse apiError = ApiErrorResponse.builder().
-				status(HttpStatus.BAD_REQUEST).
-				message(e.getMessage()).build();
+	public ResponseEntity<ApiDataResponse<?>> handleUserAlreadyExists(DriverNotAuthorisedToStartRide e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
 		return buildErrorResponseDto(apiError);
 	}
 
 	@ExceptionHandler(RideNotStarted.class)
-	public ResponseEntity<ApiDataResponse<?>> handleRideNotStarted(RideNotStarted e){
-		ApiErrorResponse apiError = ApiErrorResponse.builder().
-				status(HttpStatus.BAD_REQUEST).
-				message(e.getMessage()).build();
+	public ResponseEntity<ApiDataResponse<?>> handleRideNotStarted(RideNotStarted e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
 		return buildErrorResponseDto(apiError);
 	}
 
 	@ExceptionHandler(InvalidOtp.class)
-	public ResponseEntity<ApiDataResponse<?>> handleInvalidOtp(InvalidOtp e){
-		ApiErrorResponse apiError = ApiErrorResponse.builder().
-				status(HttpStatus.BAD_REQUEST).
-				message(e.getMessage()).build();
+	public ResponseEntity<ApiDataResponse<?>> handleInvalidOtp(InvalidOtp e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
 		return buildErrorResponseDto(apiError);
 	}
 
 	@ExceptionHandler(ResourceNotFound.class)
-	public ResponseEntity<ApiDataResponse<?>> handleResourceNotFound(ResourceNotFound e){
-		ApiErrorResponse apiError = ApiErrorResponse.builder().
-				status(HttpStatus.BAD_REQUEST).
-				message(e.getMessage()).build();
+	public ResponseEntity<ApiDataResponse<?>> handleResourceNotFound(ResourceNotFound e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
 		return buildErrorResponseDto(apiError);
 	}
 
 	@ExceptionHandler(UserNotFound.class)
-	public ResponseEntity<ApiDataResponse<?>> handleUserNotFoundException(UserNotFound e){
-		ApiErrorResponse apiError = ApiErrorResponse.builder().
-				status(HttpStatus.NOT_FOUND).
-				message(e.getMessage()).build();
+	public ResponseEntity<ApiDataResponse<?>> handleUserNotFoundException(UserNotFound e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.NOT_FOUND).message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
+	@ExceptionHandler(RideStatusNotConfirmed.class)
+	public ResponseEntity<ApiDataResponse<?>> handleRideStatusNotConfirmed(RideStatusNotConfirmed e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
+	@ExceptionHandler(DriverNotAuthorizedToCancelRide.class)
+	public ResponseEntity<ApiDataResponse<?>> handleDriverNotAuthorizedToCancelRide(DriverNotAuthorizedToCancelRide e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
+	@ExceptionHandler(RiderNotAuthorizedToCancelRide.class)
+	public ResponseEntity<ApiDataResponse<?>> handleRiderNotAuthorizedToCancelRide(RiderNotAuthorizedToCancelRide e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
+	@ExceptionHandler(RideStatusNotConfirmed.class)
+	public ResponseEntity<ApiDataResponse<?>> handleRideAlreadyConfirmed(RideStatusNotConfirmed e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
+	@ExceptionHandler(WalletNotFound.class)
+	public ResponseEntity<ApiDataResponse<?>> handleWalletNotFound(WalletNotFound e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.NOT_FOUND).message(e.getMessage()).build();
 		return buildErrorResponseDto(apiError);
 	}
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ApiDataResponse<?>> handleException(Exception e){
-		ApiErrorResponse apiError = ApiErrorResponse.builder().
-				status(HttpStatus.INTERNAL_SERVER_ERROR).
-				message(e.getMessage()).build();
+	public ResponseEntity<ApiDataResponse<?>> handleException(Exception e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage()).build();
 		return buildErrorResponseDto(apiError);
 	}
 
-	private ResponseEntity<ApiDataResponse<?>> buildErrorResponseDto(ApiErrorResponse apiError){
-		return new ResponseEntity<>(new ApiDataResponse<>(apiError),apiError.getStatus());
+	private ResponseEntity<ApiDataResponse<?>> buildErrorResponseDto(ApiErrorResponse apiError) {
+		return new ResponseEntity<>(new ApiDataResponse<>(apiError), apiError.getStatus());
 	}
 }
