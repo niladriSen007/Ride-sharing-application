@@ -1,24 +1,21 @@
-package com.niladri.RideSharingApplication.model.walletTransaction;
+package com.niladri.RideSharingApplication.dto.walletTransaction;
 
+import com.niladri.RideSharingApplication.dto.ride.RideDto;
+import com.niladri.RideSharingApplication.dto.wallet.WalletDto;
 import com.niladri.RideSharingApplication.model.enums.TransactionMethod;
 import com.niladri.RideSharingApplication.model.enums.TransactionType;
 import com.niladri.RideSharingApplication.model.ride.RideModel;
 import com.niladri.RideSharingApplication.model.wallet.WalletModel;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class WalletTransactionModel {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+@Data
+public class WalletTransactionDto {
 	private Long id;
 
 	private Double amount;
@@ -27,14 +24,11 @@ public class WalletTransactionModel {
 
 	private TransactionMethod transactionMethod;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	private RideModel ride;
+	private RideDto ride;
 
 	private String transactionId;
 
-	@CreationTimestamp
 	private LocalDateTime transactionTime;
 
-	@ManyToOne
-	private WalletModel wallet;
+	private WalletDto wallet;
 }

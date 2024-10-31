@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 public class DriverResponseDto {
 
+	private Long id;
 	private UserResponseDto user;
 	private Double rating;
+	private Boolean available;
+	private String vehicleId;
 
 }

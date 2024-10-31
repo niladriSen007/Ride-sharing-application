@@ -1,13 +1,12 @@
 package com.niladri.RideSharingApplication.service.ride;
 
-import com.niladri.RideSharingApplication.dto.ride.RideDto;
-import com.niladri.RideSharingApplication.dto.rideRequest.RideRequestDto;
 import com.niladri.RideSharingApplication.exception.ResourceNotFound;
 import com.niladri.RideSharingApplication.model.driver.DriverModel;
 import com.niladri.RideSharingApplication.model.enums.RideRequestStatus;
 import com.niladri.RideSharingApplication.model.enums.RideStatus;
 import com.niladri.RideSharingApplication.model.ride.RideModel;
 import com.niladri.RideSharingApplication.model.rideRequest.RideRequestModel;
+import com.niladri.RideSharingApplication.model.rider.RiderModel;
 import com.niladri.RideSharingApplication.repository.ride.RideRepository;
 import com.niladri.RideSharingApplication.service.rideRequest.RideRequestService;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +27,8 @@ public class RideService implements RideServiceInterface {
 
 
 	@Override
-	public RideDto getRideById(Long rideId) {
-		return rideRepository.findById(rideId)
-				.map(rideModel -> modelMapper.map(rideModel, RideDto.class))
-				.orElseThrow(() -> new ResourceNotFound("Ride not found"));
+	public RideModel getRideById(Long rideId) {
+		return rideRepository.findById(rideId).orElseThrow(() -> new ResourceNotFound("Ride not found"));
 	}
 
 	@Override
@@ -59,19 +56,15 @@ public class RideService implements RideServiceInterface {
 	}
 
 	@Override
-	public Page<RideModel> getAllRidesOfRider(Long riderId, PageRequest pageRequest) {
-		return null;
+	public Page<RideModel> getAllRidesOfRider(RiderModel riderModel, PageRequest pageRequest) {
+		return rideRepository.findByRider(riderModel, pageRequest);
 	}
 
 	@Override
-	public Page<RideModel> getAllRidesOfDriver(Long driverId, PageRequest pageRequest) {
-		return null;
+	public Page<RideModel> getAllRidesOfDriver(DriverModel driver, PageRequest pageRequest) {
+		return rideRepository.findByDriver(driver, pageRequest);
 	}
 
-	@Override
-	public void matchWithDrivers(RideRequestDto rideRequestDto) {
-
-	}
 
 
 	private String generateRandomOTP() {

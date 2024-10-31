@@ -4,7 +4,9 @@ import com.niladri.RideSharingApplication.model.enums.PaymentMethods;
 import com.niladri.RideSharingApplication.model.enums.PaymentStatus;
 import com.niladri.RideSharingApplication.model.ride.RideModel;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PaymentModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

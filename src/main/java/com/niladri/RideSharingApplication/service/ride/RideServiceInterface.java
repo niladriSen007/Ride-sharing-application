@@ -6,19 +6,19 @@ import com.niladri.RideSharingApplication.model.driver.DriverModel;
 import com.niladri.RideSharingApplication.model.enums.RideStatus;
 import com.niladri.RideSharingApplication.model.ride.RideModel;
 import com.niladri.RideSharingApplication.model.rideRequest.RideRequestModel;
+import com.niladri.RideSharingApplication.model.rider.RiderModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 public interface RideServiceInterface {
-	RideDto getRideById(Long rideId);
+	RideModel getRideById(Long rideId);
 
 	RideModel createNewRide(RideRequestModel ride, DriverModel driverModel);
 
 	RideModel updateRideStatus(Long rideId, RideStatus status);
 
-	Page<RideModel> getAllRidesOfRider(Long riderId, PageRequest pageRequest);
+	Page<RideModel> getAllRidesOfRider(RiderModel riderModel, PageRequest pageRequest);
 
-	Page<RideModel> getAllRidesOfDriver(Long driverId, PageRequest pageRequest);
+	Page<RideModel> getAllRidesOfDriver(DriverModel driver, PageRequest pageRequest);
 
-	void matchWithDrivers(RideRequestDto rideRequestDto);
 }

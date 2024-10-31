@@ -18,6 +18,8 @@ import com.niladri.RideSharingApplication.service.rideRequest.RideRequestService
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +51,9 @@ public class DriverService implements DriverServiceInterface {
 			throw new RuntimeException("Driver is not available to accept the ride");
 		}
 
-		driver.setAvailable(false);
-		DriverModel savedDriver = driverRepository.save(driver);
-		RideModel ride = rideService.createNewRide(rideRequest, savedDriver);
+		DriverModel driverModel = updateDriverAvailability(driver, false);
+
+		RideModel ride = rideService.createNewRide(rideRequest, driverModel);
 		rideRequest.setStatus(RideRequestStatus.CONFIRMED);
 
 		return modelMapper.map(ride, RideDto.class);
@@ -59,13 +61,27 @@ public class DriverService implements DriverServiceInterface {
 
 	@Override
 	public RideDto cancelRide(Long rideId) {
-		return null;
+		RideModel ride = rideService.getRideById(rideId);
+
+		DriverModel driver = getCurrentDriver();
+
+		if(!driver.equals(ride.getDriver()) ){
+			throw new DriverNotAuthorisedToStartRide("Driver is not authorized to cancel the ride");
+		}
+
+		if (!ride.getStatus().equals(RideStatus.CONFIRMED)) {
+			throw new RideNotStarted("Ride can not be cancelled as it is "+ride.getStatus());
+		}
+
+		rideService.updateRideStatus(rideId, RideStatus.CANCELLED);
+		updateDriverAvailability(driver, true);
+
+		return modelMapper.map(ride, RideDto.class);
 	}
 
 	@Override
 	public RideDto startRide(Long rideId,String otp) {
-		RideModel ride = rideRepository.findById(rideId).orElseThrow(() -> new ResourceNotFound("Ride not found"));
-//		RideModel rideModel = modelMapper.map(ride, RideModel.class);
+		RideModel ride = rideService.getRideById(rideId);
 
 		log.info("driver 1: {} - {}", ride.getOtp(),otp);
 		log.info("driver 2: {}", getCurrentDriver().getId());
@@ -102,17 +118,29 @@ public class DriverService implements DriverServiceInterface {
 
 	@Override
 	public DriverResponseDto getDriverProfile() {
-		return null;
+		DriverModel driver = getCurrentDriver();
+		return modelMapper.map(driver, DriverResponseDto.class);
 	}
 
 	@Override
-	public List<RideDto> getDriverAllRides() {
-		return List.of();
+	public Page<RideDto> getDriverAllRides(PageRequest pageRequest) {
+		DriverModel driver = getCurrentDriver();
+		return rideService.getAllRidesOfDriver(driver, pageRequest)
+				.map(ride -> modelMapper.map(ride, RideDto.class));
 	}
 
 	@Override
 	public DriverModel getCurrentDriver() {
-		return driverRepository.findById(2L).orElseThrow(() -> new ResourceNotFound("Driver not found with " +
+		return driverRepository.findById(2L)
+				.orElseThrow(() -> new ResourceNotFound("Driver not found with " +
 				"id "+2));
 	}
+
+	@Override
+	public DriverModel updateDriverAvailability(DriverModel driver, Boolean isAvailable) {
+		driver.setAvailable(isAvailable);
+		return driverRepository.save(driver);
+	}
+
+
 }
