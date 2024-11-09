@@ -9,12 +9,14 @@ import com.niladri.RideSharingApplication.model.wallet.WalletModel;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class WalletTransactionDto {
 	private Long id;
 

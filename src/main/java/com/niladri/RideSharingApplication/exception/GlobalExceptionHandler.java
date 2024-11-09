@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
 		return buildErrorResponseDto(apiError);
 	}
 
-	@ExceptionHandler(RideStatusNotConfirmed.class)
+	@ExceptionHandler(RideAlreadyConfirmed.class)
 	public ResponseEntity<ApiDataResponse<?>> handleRideAlreadyConfirmed(RideStatusNotConfirmed e) {
 		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.BAD_REQUEST).message(e.getMessage()).build();
 		return buildErrorResponseDto(apiError);
@@ -91,6 +91,12 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(WalletNotFound.class)
 	public ResponseEntity<ApiDataResponse<?>> handleWalletNotFound(WalletNotFound e) {
+		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.NOT_FOUND).message(e.getMessage()).build();
+		return buildErrorResponseDto(apiError);
+	}
+
+	@ExceptionHandler(DriverNotAvailable.class)
+	public ResponseEntity<ApiDataResponse<?>> handleWalletNotFound(DriverNotAvailable e) {
 		ApiErrorResponse apiError = ApiErrorResponse.builder().status(HttpStatus.NOT_FOUND).message(e.getMessage()).build();
 		return buildErrorResponseDto(apiError);
 	}
