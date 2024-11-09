@@ -9,6 +9,7 @@ import com.niladri.RideSharingApplication.model.rider.RiderModel;
 import com.niladri.RideSharingApplication.model.user.UserModel;
 import com.niladri.RideSharingApplication.repository.user.UserRepository;
 import com.niladri.RideSharingApplication.service.rider.RiderService;
+import com.niladri.RideSharingApplication.service.wallet.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class AuthService implements AuthServiceInterface {
 	private final ModelMapper modelMapper;
 	private final UserRepository userRepository;
 	private final RiderService riderService;
+	private WalletService walletService;
 
 	@Override
 	public String login(String username, String password) {
@@ -48,7 +50,8 @@ public class AuthService implements AuthServiceInterface {
 		//create user related entities like rider,wallet, etc.
 		RiderModel riderProfile = riderService.createRiderProfile(newUser);
 
-		//TODO : create wallet
+		walletService.createNewWallet(newUser);
+
 
 		return modelMapper.map(newUser, UserResponseDto.class);
 	}

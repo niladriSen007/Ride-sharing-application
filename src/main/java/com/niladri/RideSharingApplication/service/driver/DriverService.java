@@ -2,17 +2,16 @@ package com.niladri.RideSharingApplication.service.driver;
 
 import com.niladri.RideSharingApplication.dto.driver.DriverResponseDto;
 import com.niladri.RideSharingApplication.dto.ride.RideDto;
-import com.niladri.RideSharingApplication.exception.DriverNotAuthorisedToStartRide;
-import com.niladri.RideSharingApplication.exception.InvalidOtp;
-import com.niladri.RideSharingApplication.exception.ResourceNotFound;
-import com.niladri.RideSharingApplication.exception.RideNotStarted;
+import com.niladri.RideSharingApplication.exception.*;
 import com.niladri.RideSharingApplication.model.driver.DriverModel;
 import com.niladri.RideSharingApplication.model.enums.RideRequestStatus;
 import com.niladri.RideSharingApplication.model.enums.RideStatus;
+import com.niladri.RideSharingApplication.model.payment.PaymentModel;
 import com.niladri.RideSharingApplication.model.ride.RideModel;
 import com.niladri.RideSharingApplication.model.rideRequest.RideRequestModel;
 import com.niladri.RideSharingApplication.repository.driver.DriverRepository;
 import com.niladri.RideSharingApplication.repository.ride.RideRepository;
+import com.niladri.RideSharingApplication.service.payment.PaymentService;
 import com.niladri.RideSharingApplication.service.ride.RideService;
 import com.niladri.RideSharingApplication.service.rideRequest.RideRequestService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +35,7 @@ public class DriverService implements DriverServiceInterface {
 	private final RideService rideService;
 	private final ModelMapper modelMapper;
 	private final RideRepository rideRepository;
+	private final PaymentService paymentService;
 
 	@Override
 	@Transactional
@@ -43,12 +43,12 @@ public class DriverService implements DriverServiceInterface {
 		RideRequestModel rideRequest = rideRequestService.getRideRequestById(rideRequestId);
 
 		if(!rideRequest.getStatus().equals(RideRequestStatus.PENDING)) {
-			throw new RuntimeException("Ride request can not be accepted as it is not pending");
+			throw new RideAlreadyConfirmed("Ride request can not be accepted as it is not pending");
 		}
 
 		DriverModel driver = getCurrentDriver();
 		if(Boolean.FALSE.equals(driver.getAvailable())){
-			throw new RuntimeException("Driver is not available to accept the ride");
+			throw new DriverNotAvailable("Driver is not available to accept the ride");
 		}
 
 		DriverModel driverModel = updateDriverAvailability(driver, false);
@@ -93,7 +93,7 @@ public class DriverService implements DriverServiceInterface {
 		}
 
 		if(!ride.getStatus().equals(RideStatus.CONFIRMED)){
-			throw new RideNotStarted("Ride can not be started as it is not confirmed");
+			throw new RideStatusNotConfirmed("Ride can not be started as it is not confirmed");
 		}
 
 		if(!otp.equals(ride.getOtp())){
@@ -103,12 +103,32 @@ public class DriverService implements DriverServiceInterface {
 		ride.setStartTime(LocalDateTime.now());
 		RideModel updatedRide = rideService.updateRideStatus(rideId, RideStatus.ONGOING);
 
+		PaymentModel newPayment = paymentService.createNewPayment(updatedRide);
+
 		return modelMapper.map(updatedRide, RideDto.class);
 	}
 
 	@Override
+	@Transactional
 	public RideDto endRide(Long rideId) {
-		return null;
+
+		RideModel ride = rideService.getRideById(rideId);
+
+		DriverModel driver = getCurrentDriver();
+		if(!driver.equals(ride.getDriver()) ){
+			throw new DriverNotAuthorisedToStartRide("Driver is not authorized to start the ride");
+		}
+
+		if(!ride.getStatus().equals(RideStatus.ONGOING)){
+			throw new RideNotStarted("Ride can not be ended as it is not ONGOING");
+		}
+
+		ride.setEndTime(LocalDateTime.now());
+		RideModel rideModel = rideService.updateRideStatus(rideId, RideStatus.ENDED);
+		updateDriverAvailability(driver, true);
+
+		paymentService.processPayment(ride);
+		return modelMapper.map(rideModel, RideDto.class);
 	}
 
 	@Override
